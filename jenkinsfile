@@ -24,13 +24,26 @@ pipeline {
                 }
             }
         }
+     
         stage('Install AWS CLI') {
             steps {
+                // Télécharge le fichier zip de AWS CLI
                 sh 'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"'
-                sh 'unzip awscliv2.zip'
+                // Décompresse sans demander de confirmation
+                sh 'unzip -o awscliv2.zip'
+                // Installe AWS CLI
                 sh './aws/install'
             }
         }
+        stage('Login to ECR') {
+            steps {
+                // Connecte à ECR
+                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 339713000514.dkr.ecr.us-east-1.amazonaws.com'
+            }
+        }
+    }
+}
+
         stage('Login to ECR') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'AWS_credentials', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
