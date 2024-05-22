@@ -45,7 +45,6 @@ pipeline {
                 script {
                     // Push the Docker image to ECR
                     sh '''
-                    IMAGE_URI= "339713000514.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${TAG}"
                     docker push $IMAGE_URI
                     '''
                 }
