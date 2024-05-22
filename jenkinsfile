@@ -25,17 +25,7 @@ pipeline {
             }
         }
      
-        stage('Install AWS CLI') {
-            steps {
-                // Télécharge le fichier zip de AWS CLI
-                sh 'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"'
-                // Décompresse sans demander de confirmation
-                sh 'unzip -o awscliv2.zip'
-                // Installe AWS CLI
-                sh './aws/install'
-            }
-        }
-
+        
         stage('Login to ECR') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'AWS_credentials', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
