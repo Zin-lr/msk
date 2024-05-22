@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "springcloud/spring-cloud-dataflow-server:2.11.2-SNAPSHOT"
+        DOCKER_IMAGE = 'dataflow'
         AWS_REGION = 'us-east-1'
         ECR_REPO = 'jenkinsrepo'
         TAG = 'latest' // Specify the tag you want to use for the image
@@ -24,6 +24,13 @@ pipeline {
                 }
             }
         }
+        stage('Install AWS CLI') {
+            steps {
+                sh 'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"'
+                sh 'unzip awscliv2.zip'
+                sh './aws/install'
+            }
+        }
         stage('Login to ECR') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'AWS_credentials', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
@@ -42,7 +49,7 @@ pipeline {
                 script {
                     // Push the Docker image to ECR
                     sh '''
-                    IMAGE_URI=339713000514.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:${TAG}
+                    IMAGE_URI= 339713000514.dkr.ecr.us-east-1.amazonaws.com/jenkinsrepo:${TAG}
                     docker push $IMAGE_URI
                     '''
                 }
