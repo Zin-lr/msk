@@ -49,7 +49,7 @@ pipeline {
                 script {
                     // Push the Docker image to ECR
                     sh '''
-                    IMAGE_URI= 339713000514.dkr.ecr.us-east-1.amazonaws.com/jenkinsrepo:${TAG}
+                    IMAGE_URI= "339713000514.dkr.ecr.us-east-1.amazonaws.com/jenkinsrepo:${TAG}"
                     docker push $IMAGE_URI
                     '''
                 }
